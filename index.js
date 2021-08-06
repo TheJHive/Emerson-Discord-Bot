@@ -1,13 +1,13 @@
 require('dotenv').config();
 
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const {Client, Intents, MessageEmbed} = require('discord.js');
+const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const cron = require('node-cron');
 const fs = require('fs');
 require('./server')();
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+  console.log(`Logged in as ${client.user.tag}!`)
 });
 
 client.login(process.env.DISCORD_TOKEN);
@@ -16,15 +16,13 @@ const general = client.channels.cache.get('804469176214749214');
 let channelsLocked = false; // The whole locking system works around this variable so be careful with it
 
 // "IT'S BROKEN!" -Lando Norris
+// Locking has now become a command-only function used in cases of server spam or high message load.
 function lock(){
-	//general.parent.updateOverwrite(general.guild.roles.everyone, {SEND_MESSAGES: false});
 	channelsLocked = true;
 };
 function unlock(){
-	//general.parent.updateOverwrite(general.guild.roles.everyone, {SEND_MESSAGES: true});
 	channelsLocked = false;
 };
-unlock(); // Yes, this means the bot unlocks the channels every time you start it up. Hopefully this won't cause a problem after perma-online is achieved with UptimeRobot.
 
 /* Comment out all of these during vacation times.
 // Mondays (This also controls the lunch break and AT lock tasks for all days)
@@ -240,10 +238,10 @@ cron.schedule('30 13 * * 5', () => {
 });
 */
 
-const help = new Discord.MessageEmbed()
+const help = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Commands List')
-	.setDescription('Here are my commands. All commands start with `e!`\n**I am not the definitive source of information!** Always check official websites before blindly trusting me.')
+	.setDescription('Here are my commands. All commands start with `e!`\n**I am not the definitive source of information!** Always check official websites before blindly trusting me.\nMany commands here were only relevant during online/hybrid school and are now outdated. They are kept due to historical value.')
 	.addFields(
 		{name: '`e!help`', value: 'If you\'ve run this command, you know what it does now.', inline: true},
 		{name: '`e!credits`', value: 'Shows the credits of the bot programmers. (Literally one kid who looked at a bunch of websites)', inline: true},
@@ -263,7 +261,7 @@ const help = new Discord.MessageEmbed()
 		{name: '`e!invite-bot`', value: 'Gives you a link to add this bot to your own server!', inline: true},
 		{name: '`e!fart`', value: 'fart', inline: true}
 	);
-const credits = new Discord.MessageEmbed()
+const credits = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Credits')
 	.setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
@@ -275,24 +273,24 @@ const credits = new Discord.MessageEmbed()
 		{name: 'dotenv', value: 'For storage of bot token and authorization\n[npm page](https://www.npmjs.com/package/dotenv)'},
 		{name: 'Node Cron', value: 'For scheduled class reminders\n[npm page](https://www.npmjs.com/package/node-cron)'}
 	);
-const calendar = new Discord.MessageEmbed()
+const calendar = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Spring 2021 Semester Calendar')
 	.setURL('https://docs.google.com/document/d/1bClVuj7aylwYsFeP-VMwqgbhvWLM1LoYjLiWyXR7_UY')
 	.setDescription('Calendar of periods for each day in the Spring 2021 Semester')
-const teachers = new Discord.MessageEmbed()
+const teachers = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('List of teachers in this server')
 	.addFields(
 		{name: 'Ms. Barbeau:', value: '[Schoology Page](https://lms.lausd.net/user/35794485/info)'},
 		{name: 'Ms. Fukuji:', value: '[Schoology Page](https://lms.lausd.net/user/45706285/info)'}
 	);
-const emersonSite = new Discord.MessageEmbed()
+const emersonSite = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Emerson Schoolloop Website')
 	.setURL('https://emersonms-lausd-ca.schoolloop.com')
 	.setDescription('Emerson Community Charter website on Schoolloop')
-const officeHours = new Discord.MessageEmbed()
+const officeHours = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Office Hours')
 	.setDescription('**Teacher office hours are 2:15 - 2:45 M-F unless stated otherwise below:**')
@@ -305,16 +303,16 @@ const officeHours = new Discord.MessageEmbed()
 		{name: 'Mr. Kamm:', value: '8:30 - 9 a.m. daily', inline: true},
 		{name: 'Mr. Hastings:', value: '8:30 - 9 a.m. daily via Google voice 949-371-6683, call or text', inline: true}
 	);
-const onlineSchedule = new Discord.MessageEmbed()
+const onlineSchedule = new MessageEmbed()
 	.setColor('#143F69')
 	.setImage('https://cdn.schoolloop.com/uimgcdn/aHR0cHM6Ly9lbWVyc29ubXMtbGF1c2QtY2Euc2Nob29sbG9vcC5jb20vdWltZy9maWxlLzE1MDAxNzg5NzM5NzMvMTM4MTgyMjc1NjUzOC8zMzYyMzkyMTUzMjgwOTQ0MTI2LnBuZw==')
-const hybridSchedule = new Discord.MessageEmbed()
+const hybridSchedule = new MessageEmbed()
 	.setColor('#143F69')
 	.setImage('https://cdn.schoolloop.com/uimgcdn/aHR0cHM6Ly9lbWVyc29ubXMtbGF1c2QtY2Euc2Nob29sbG9vcC5jb20vdWltZy9maWxlLzE1MDAxNzg5NzM5NzMvMTM4MTgyMjc1NjUzOC8zNDc5MzU0MzkzMzk2NjUwOTgzLnBuZw==%22')
-const tutoring = new Discord.MessageEmbed()
+const tutoring = new MessageEmbed()
 	.setColor('#143F69')
 	.setImage('https://emersonms-lausd-ca.schoolloop.com/file/1500178973973/1424590026792/3160407590931805703.jpg')
-const lunchGroups = new Discord.MessageEmbed()
+const lunchGroups = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Lunch Time Student Groups')
 	.setDescription('Zoom links to Lunch Time Student Groups')
@@ -329,17 +327,17 @@ const lunchGroups = new Discord.MessageEmbed()
 		{name: 'Ms. Muckenthaler:', value: '[Wednesdays - Free-for-All](https://lausd.zoom.us/j/89472759017)'},
 		{name: 'Ms. Muckenthaler:', value: '[Tuesdays 2:30 - 3:30 support group (grief support and just kids struggling right now)](https://lausd.zoom.us/j/88180349377)'},
 	);
-const parentPortal = new Discord.MessageEmbed()
+const parentPortal = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('LAUSD Parent Portal Student Login')
 	.setURL('https://parentportalapp.lausd.net/parentaccess/studentLogin.jsp')
 	.setDescription('**Reminder:** Don\'t put @mymail.lausd.net in the email section')
-const campEmerson = new Discord.MessageEmbed()
+const campEmerson = new MessageEmbed()
 	.setColor('#143F69')
 	.setTitle('Camp Emerson Info and registration link')
 	.setDescription('[**Click here to register for CAMP EMERSON**](https://docs.google.com/forms/d/e/1FAIpQLSdDh7tz0eMHQEnN3Pd4ylkcErQVeUSq24Qr7bI9UhvOi0geFw/viewform)\n\n\nWe are thrilled to once again offer our CAMP EMERSON when incoming students come to the Emerson campus and meet teachers, hear about middle school and best of all, meet new friends!\n\nDue to the pandemic, Emerson is offering Camp Emerson on two days: **1 day for incoming 6th graders, 1 day for incoming 7th graders.** Even though you\'re officially 7th graders, you spent all year online so we want you to come to Emerson in preparation for 7th grade!\n\n**Tuesday, August 10th - 6th grade**\n\n**Wednesday, August 11th - 7th grade**\n\n\n**Both days will be from 9 a.m. to 2** and will go as follows:\n\n 8 - 9 - registration and purchase Emerson uniform shirts and gear.\n\n9 - 10 - parent orientation with Mr. Watson in the auditorium\n\n9-2 - student workshops around campus\n\n**Lunch is provided thanks to PACE.**')
 	.setFooter('Source: Emerson Community Charter website')
-const cHelp = new Discord.MessageEmbed()
+const cHelp = new MessageEmbed()
 	.setColor('#143569')
 	.setTitle('Calculator Command Help')
 	.setDescription('To use the calculator, the numbers and operation must be written in a specific order. You can use either `e!calc` or `e!calculator` as the command.')
@@ -348,7 +346,7 @@ const cHelp = new Discord.MessageEmbed()
 		{name: 'Operators', value: 'The operator must come after your two numbers. The four supported operators are `add`, `subtract`, `multiply`, and `divide`. Alternatively, you can use `+`, `-` (a hyphen or dash), `x` (must be lowercase), or `/` (only this kind of slash).'},
 		{name: 'Example Command', value: 'Command: `e!calc 10 7 subtract`\nThe bot will respond with `Your answer is 3.`'}
 	);
-const rHelp = new Discord.MessageEmbed()
+const rHelp = new MessageEmbed()
 	.setColor('#143569')
 	.setTitle('Role Command Help')
 	.setDescription('To get roles through the role command, you must enter the initial command, `e!role` and then an argument, which would be the role name. There are different categories of roles in this command. You can only have one role per category.')
@@ -358,7 +356,7 @@ const rHelp = new Discord.MessageEmbed()
 		{name: 'Example Command', value: 'Command: `e!role highly accelerated`\nThe bot will give me the Highly Accelerated role. (Arguments are not case sensitive, so capitalization does not matter.)'},
 		{name: 'These roles are not mandatory or required.', value: 'They also do not change what channels you can and cannot see.'}
 	)
-const inviteBot = new Discord.MessageEmbed()
+const inviteBot = new MessageEmbed()
 	.setColor('#143569')
 	.setTitle('Bot Invite Link')
 	.setDescription('Click [**here**](https://www.youtube.com/watch?v=oHg5SJYRHA0) to add this bot to your own server!')
@@ -374,35 +372,35 @@ let daysLeft = daysLeftDifference / (1000 * 3600 * 24);
 let daysLeftRounded = Math.round(daysLeft);
 
 const blockedWords = fs.readFileSync('blockedWords.txt').toString().split('\n');
-client.on('message', message => {
+client.on('messageCreate', message => {
 	const general = client.channels.cache.get('804469176214749214');
 	function lock(){
-		general.parent.updateOverwrite(general.guild.roles.everyone, {SEND_MESSAGES: false});
+		general.parent.permissionOverwrites.edit(general.guild.roles.everyone, {SEND_MESSAGES: false});
 		channelsLocked = true;
 	};
 	function unlock(){
-		general.parent.updateOverwrite(general.guild.roles.everyone, {SEND_MESSAGES: true});
+		general.parent.permissionOverwrites.edit(general.guild.roles.everyone, {SEND_MESSAGES: true});
 		channelsLocked = false;
 	};
 	const messageAuthor = message.author;
 	if (message.channel.name === 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')){
-		message.channel.send(`Great art, ${messageAuthor}!`);
+		message.reply(`Great art, ${messageAuthor}!`);
 		message.pin();
 		return;
 	}
 	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
-		message.delete()
+		message.delete();
 		console.log(`A message by ${messageAuthor.tag} was deleted: ` + '"' + message.content + '"');
 		return;
 	}
 	if (message.content === 'ping'){
-		message.channel.send('pong');
+		message.reply({content: 'pong', allowedMentions: {repliedUser: false}});
 		console.log(`${messageAuthor.tag} pinged`);
 		return;
 	}
 	if (message.content.toLowerCase() === 'egg' && messageAuthor.id !== client.user.id){
 		if (Math.floor(Math.random() * 50) == 1){
-			message.channel.send('no');
+			message.reply({content: 'no', allowedMentions: {repliedUser: false}});
 			console.log(`${messageAuthor.tag} got the lucky egg no!`);
 			return;
 		}else{
@@ -426,93 +424,100 @@ client.on('message', message => {
 			let operator = splitStrings[3];
 			// TODO: Fix decimals. This handler is funny but also the equivalent of a duct-taped together birdhouse.
 			if (message.content.includes('.')){
-				message.channel.send('Numbers with decimals are currently not supported because the developer is dumb and doesn\'t know how to make JavaScipt math do that');
+				message.reply({content: 'Numbers with decimals are currently not supported because the developer is dumb and doesn\'t know how to make JavaScipt math do that', allowedMentions: {repliedUser: false}});
 			}else // This is some serious spaghetti code right here. 
 			switch (operator){
 				case 'add':
 				case '+':
 					if (isNaN(firstNumber + secondNumber)){
-						message.channel.send('You have to put in numbers, not letters, silly!');
+						message.reply({content: 'You have to put in numbers, not letters, silly!', allowedMentions: {repliedUser: false}});
 					}else{
-						message.channel.send(`Your answer is **${firstNumber + secondNumber}**.`);
+						message.reply({content: `Your answer is **${firstNumber + secondNumber}**.`, allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'subtract':
 				case '-':
 					if (isNaN(firstNumber - secondNumber)){
-						message.channel.send('You have to put in numbers, not letters, silly!');
+						message.reply({content: 'You have to put in numbers, not letters, silly!', allowedMentions: {repliedUser: false}});
 					}else{
-						message.channel.send(`Your answer is **${firstNumber - secondNumber}**.`);
+						message.reply({content: `Your answer is **${firstNumber - secondNumber}**.`, allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'multiply':
 				case 'x':
 					if (isNaN(firstNumber * secondNumber)){
-						message.channel.send('You have to put in numbers, not letters, silly!');
+						message.reply({content: 'You have to put in numbers, not letters, silly!', allowedMentions: {repliedUser: false}});
 					}else{
-						message.channel.send(`Your answer is **${firstNumber * secondNumber}**.`);
+						message.reply({content: `Your answer is **${firstNumber * secondNumber}**.`, allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'divide':
 				case '/':
 					if (isNaN(firstNumber / secondNumber)){
-						message.channel.send('You have to put in numbers, not letters, silly!');
+						message.reply({content: 'You have to put in numbers, not letters, silly!', allowedMentions: {repliedUser: false}});
 					}else{
-						message.channel.send(`Your answer is **${firstNumber / secondNumber}**.`);
+						message.reply({content: `Your answer is **${firstNumber / secondNumber}**.`, allowedMentions: {repliedUser: false}});
 					}
 					break;
 				default:
-					message.channel.send('Something went wrong with your command. Use `e!c-help` for a guide to the calculator.');
+					message.reply({content: 'Something went wrong with your command. Use `e!c-help` for a guide to the calculator.', allowedMentions: {repliedUser: false}});
 					break;
 			}
 			console.log(`${messageAuthor.tag} ran the calculator with numbers ` + firstNumber + ' and ' + secondNumber + ' with operator ' + operator);
 			return;
 		};
 		if (message.content.startsWith('e!role')){
-			const argument = message.content.slice(6).trim().toLowerCase();
+			const argument = message.content.slice(6).trim().toLowerCase(); // This is probably a bad way of doing this but I don't have time to find a cleaner way.
 			switch (argument){
 				case 'highly accelerated':
 					if (message.member.roles.cache.has('844002210471608340') || message.member.roles.cache.has('844002375501217842') || message.member.roles.cache.has('844002450976538624')){
-						message.channel.send('You already have a role of this category! Ask a staff member if you need to change it.');
+						message.reply({content: 'You already have a role of this category! Ask a staff member if you need to change it.', allowedMentions: {repliedUser: false}});
 					}else{
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '844002210471608340'));
-						message.channel.send('You have been given the Highly Accelerated role!');
+						message.reply({content: 'You have been given the Highly Accelerated role!', allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'accelerated':
 					if (message.member.roles.cache.has('844002210471608340') || message.member.roles.cache.has('844002375501217842') || message.member.roles.cache.has('844002450976538624')){
-						message.channel.send('You already have a role of this category! Ask a staff member if you need to change it.');
+						message.reply({content: 'You already have a role of this category! Ask a staff member if you need to change it.', allowedMentions: {repliedUser: false}});
 					}else{
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '844002375501217842'));
-						message.channel.send('You have been given the Accelerated role!');
+						message.reply({content: 'You have been given the Accelerated role!', allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'general ed':
 					if (message.member.roles.cache.has('844002210471608340') || message.member.roles.cache.has('844002375501217842') || message.member.roles.cache.has('844002450976538624')){
-						message.channel.send('You already have a role of this category! Ask a staff member if you need to change it.');
+						message.reply({content: 'You already have a role of this category! Ask a staff member if you need to change it.', allowedMentions: {repliedUser: false}});
 					}else{
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '844002450976538624'));
-						message.channel.send('You have been given the General Ed role!');
+						message.reply({content: 'You have been given the General Ed role!', allowedMentions: {repliedUser: false}});
 					}
 					break;
 				case 'online':
+					message.reply({content: 'That role has been deprecated.', allowedMentions: {repliedUser: false}});
+					/*
+					The code remains here, commented out, for historical preservation.
 					if (message.member.roles.cache.has('836733009230692374') || message.member.roles.cache.has('836732949687828500')){
-						message.channel.send('You already have a role of this category! Ask a staff member if you need to change it.');
+						message.reply('You already have a role of this category! Ask a staff member if you need to change it.');
 					}else{
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '836733009230692374'));
-						message.channel.send('You have been given the Online role!');
+						message.reply('You have been given the Online role!');
 					}
 					break;
+					*/
 				case 'hybrid':
+					message.reply({content: 'That role has been deprecated.', allowedMentions: {repliedUser: false}});
+					/*
 					if (message.member.roles.cache.has('836733009230692374') || message.member.roles.cache.has('836732949687828500')){
-						message.channel.send('You already have a role of this category! Ask a staff member if you need to change it.');
+						message.reply('You already have a role of this category! Ask a staff member if you need to change it.');
 					}else{
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '836732949687828500'));
-						message.channel.send('You have been given the Hybrid role!');
+						message.reply('You have been given the Hybrid role!');
 					}
 					break;
+					*/
 				default:
-					message.channel.send('That\'s not a role! Use `e!r-help` for a guide to the role command.')
+					message.reply({content: 'That\'s not a role! Use `e!r-help` for a guide to the role command.', allowedMentions: {repliedUser: false}})
 					break;
 			}
 			console.log(`${messageAuthor.tag} ran e!role with ${argument}`);
@@ -520,78 +525,75 @@ client.on('message', message => {
 		}
 		switch (command){
 			case 'help':
-				message.channel.send(help);
+				message.reply({embeds: [help], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'credits':
-			  message.channel.send(credits);
+			  message.reply({embeds: [credits], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'calendar':
-				message.channel.send(calendar);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [calendar], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'teachers':
-				message.channel.send(teachers);
+				message.reply({embeds: [teachers], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'emerson-site':
-				message.channel.send(emersonSite);
+				message.reply({embeds: [emersonSite], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'office-hours':
-				message.channel.send(officeHours);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [officeHours], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'online-schedule':
-				message.channel.send(onlineSchedule);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [onlineSchedule], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'hybrid-schedule':
-				message.channel.send(hybridSchedule);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [hybridSchedule], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'tutoring':
-				message.channel.send(tutoring);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [tutoring], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'lunch-groups':
-				message.channel.send(lunchGroups);
+				message.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [lunchGroups], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'parent-portal':
-				message.channel.send(parentPortal);
+				message.reply({embeds: [parentPortal], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'days-left':
 				if (today.getTime() < lastDay.getTime()){
-					message.channel.send('There are ' + daysLeftRounded + ' days left of school.');
+					message.reply({content: `There are ${daysLeftRounded} days left of school.`, allowedMentions: {repliedUser: false}});
 				}else
 				if (today.getTime() > lastDay.getTime() && today.getTime() < firstDay.getTime()){
-					message.channel.send('It\'s currently summer break, and there are ' + daysUntilRounded + ' days left until school starts.');
+					message.reply({content: `It\'s currently summer break, and there are ${daysUntilRounded} days left until school starts.`, allowedMentions: {repliedUser: false}});
 				}
 				logCommand();
 				break;
 			case 'camp-emerson':
-				message.channel.send(campEmerson);
+				message.reply({content: '**This command is always subject to being outdated at any time; always check the Emerson website as well.**', embeds: [campEmerson], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'c-help':
-				message.channel.send(cHelp);
+				message.reply({embeds: [cHelp], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'r-help':
-				message.channel.send(rHelp);
-				logCommand();
-				break;
-			case 'error':
-				message.channel.send('```TypeError: Cannot read property \'parent\' of undefined\n    at unlock (/home/runner/Emerson-Discord-Bot/index.js:24:10)\n    at /home/runner/Emerson-Discord-Bot/index.js:27:1\n    at Script.runInContext (vm.js:130:18)\n    at Object.<anonymous> (/run_dir/interp.js:209:20)\n    at Module._compile (internal/modules/cjs/loader.js:999:30)\n    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1027:10)\n    at Module.load (internal/modules/cjs/loader.js:863:32)\n    at Function.Module._load (internal/modules/cjs/loader.js:708:14)\n    at Function.executeUserEntryPoint [as runMain] (internal/modules/run_main.js:60:12)\n    at internal/main/run_main_module.js:17:47```')
+				message.reply({embeds: [rHelp], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
 			case 'invite-bot':
-				message.channel.send(inviteBot);
+				message.reply({embeds: [inviteBot], allowedMentions: {repliedUser: false}});
 				logCommand();
 				break;
+			/*
 			case 'fart': // why did i make this
 				if (message.member.voice.channel){
 					message.member.voice.channel.join()
@@ -600,38 +602,39 @@ client.on('message', message => {
 							setTimeout(function(){connection.disconnect()}, 4000);
 						});
 				}else{
-					message.channel.send('You must be in a VC to use this command!')
-					console.log(`${messageAuthor.tag} tried to fart but wasn't in a VC :(`)
+					message.reply({content: 'You must be in a VC to use this command!', allowedMentions: {repliedUser: false}})
+					console.log(`${messageAuthor.tag} tried to fart but wasn't in a VC :(`);
 				}
 				break;
+			*/
 			case 'lock':
 				if (message.member.roles.cache.has('755893494211543161')){
 					if (channelsLocked == false){
 						lock();
+						message.reply({content: 'Channels locked.', allowedMentions: {repliedUser: false}});
 						console.log(`${messageAuthor.tag} locked channels`);
-						message.channel.send('Channels locked.');
 					}else{
-						message.channel.send('The channels are already locked!');
+						message.reply({content: 'The channels are already locked!', allowedMentions: {repliedUser: false}});
 					}
 				}else{
-					message.channel.send('You don\'t have permission to do that!');
+					message.reply({content:'You don\'t have permission to do that!', allowedMentions: {repliedUser: false}});
 				}
 				break;
 			case 'unlock':
 				if (message.member.roles.cache.has('755893494211543161')){
 					if (channelsLocked == true){
 						unlock();
+						message.reply({content: 'Channels unlocked.', allowedMentions: {repliedUser: false}});
 						console.log(`${messageAuthor.tag} unlocked channels`);
-						message.channel.send('Channels unlocked.');
 					}else{
-						message.channel.send('The channels are already unlocked!');
+						message.reply({content: 'The channels are already unlocked!', allowedMentions: {repliedUser: false}});
 					}
 				}else{
-					message.channel.send('You don\'t have permission to do that!');
+					message.reply({content: 'You don\'t have permission to do that!', allowedMentions: {repliedUser: false}});
 				}
 				break;
 			default:
-				message.channel.send('That\'s not a command! Use `e!help` for a list of commands.');
+				message.reply({content: 'That\'s not a command! Use `e!help` for a list of commands.', allowedMentions: {repliedUser: false}});
 				break;
   		}
 		return;

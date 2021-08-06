@@ -7,4 +7,4 @@ If you're going to run this on your machine, you obviously need basic node.js. I
 As for code dependencies, you need (for obvious reasons), [discord.js](https://discord.js.org/). You will also need [dotenv](https://www.npmjs.com/package/dotenv) for token storage, [Express](http://expressjs.com/) for the HTTP server, and [node-cron](https://www.npmjs.com/package/node-cron) for scheduled tasks.
 
 
-###### Why did I make a `README.md` anyway? It's not like anyone's going to see it. This isn't open source -J
+###### Why did I make a `README.md` anyway? ~~It's not like anyone's going to see it. This isn't open source.~~ Ok, now it is. -J

@@ -7,7 +7,7 @@ const fs = require('fs');
 require('./server')();
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`)
+  console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
@@ -360,6 +360,7 @@ const inviteBot = new MessageEmbed()
 	.setColor('#143569')
 	.setTitle('Bot Invite Link')
 	.setDescription('Click [**here**](https://www.youtube.com/watch?v=oHg5SJYRHA0) to add this bot to your own server!')
+
 // This bit is used for e!days-left
 let today = new Date();
 const firstDay = new Date(today.getFullYear(), 7, 16);
@@ -503,8 +504,8 @@ client.on('messageCreate', message => {
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '836733009230692374'));
 						message.reply('You have been given the Online role!');
 					}
-					break;
 					*/
+					break;
 				case 'hybrid':
 					message.reply({content: 'That role has been deprecated.', allowedMentions: {repliedUser: false}});
 					/*
@@ -514,8 +515,8 @@ client.on('messageCreate', message => {
 						message.member.roles.add(message.guild.roles.cache.find(role => role.id == '836732949687828500'));
 						message.reply('You have been given the Hybrid role!');
 					}
-					break;
 					*/
+					break;
 				default:
 					message.reply({content: 'That\'s not a role! Use `e!r-help` for a guide to the role command.', allowedMentions: {repliedUser: false}})
 					break;

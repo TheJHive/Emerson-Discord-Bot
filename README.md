@@ -11,7 +11,7 @@ As for code dependencies, you need (for obvious reasons), [discord.js](https://d
 - [`discord-api-types`](https://github.com/discordjs/discord-api-types)
 - (More likely to come soon)
 
-You will also need [dotenv](https://www.npmjs.com/package/dotenv) for token storage and [node-cron](https://www.npmjs.com/package/node-cron) for scheduled tasks.
-
+You will also need [dotenv](https://www.npmjs.com/package/dotenv) for token storage and [node-cron](https://www.npmjs.com/package/node-cron) for scheduled tasks.  
+And one big thank-you to the [Discord.js Guide](https://discordjs.guide/).
 
 ###### Why did I make a `README.md` anyway? ~~It's not like anyone's going to see it. This isn't open source~~ Ok, now it is. -J

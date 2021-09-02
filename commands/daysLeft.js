@@ -12,7 +12,7 @@ let daysLeftRounded = Math.round(daysLeft);
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('days-left')
+		.setName('daysleft')
 		.setDescription('Tells you how many days of school are left.'),
 	async execute(interaction) {
 		if (today.getTime() < lastDay.getTime()){

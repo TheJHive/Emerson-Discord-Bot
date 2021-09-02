@@ -7,7 +7,7 @@ const onlineSchedule = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('online-schedule')
+		.setName('onlineschedule')
 		.setDescription('(OUTDATED) Displays the weekly schedule calendar of periods and times for online classes.'),
 	async execute(interaction) {
 		await interaction.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [onlineSchedule]});

@@ -17,7 +17,7 @@ const officeHours = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('office-hours')
+		.setName('officehours')
 		.setDescription('(OUTDATED) Pulls up a list of the teachers\' office hour Zoom times.'),
 	async execute(interaction) {
 		await interaction.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [officeHours]});

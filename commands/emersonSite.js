@@ -9,7 +9,7 @@ const emersonSite = new MessageEmbed()
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('emerson-site')
+        .setName('emersonsite')
         .setDescription('Pulls up the link to the Emerson Community Charter website on Schoolloop.'),
     async execute(interaction) {
         await interaction.reply({embeds: [emersonSite]});

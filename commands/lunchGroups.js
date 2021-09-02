@@ -19,7 +19,7 @@ const lunchGroups = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('lunch-groups')
+		.setName('lunchgroups')
 		.setDescription('Pulls up a list of Lunch Time Student Group Zoom links.'),
 	async execute(interaction) {
 		await interaction.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [lunchGroups]});

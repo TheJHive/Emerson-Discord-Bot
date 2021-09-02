@@ -9,7 +9,7 @@ const parentPortal = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('parent-portal')
+		.setName('parentportal')
 		.setDescription('Pulls up the link to the LAUSD Parent Portal Student Login, where you can get your SSID.'),
 	async execute(interaction) {
 		await interaction.reply({embeds: [parentPortal]});

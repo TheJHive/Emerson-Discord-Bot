@@ -7,7 +7,7 @@ const hybridSchedule = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('hybrid-schedule')
+		.setName('hybridschedule')
 		.setDescription('If you run this, you\'ll know what it does.'),
 	async execute(interaction) {
 		await interaction.reply({content: '**This command is outdated; it is kept due to its historical value.**', embeds: [hybridSchedule]});

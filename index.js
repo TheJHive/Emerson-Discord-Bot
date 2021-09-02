@@ -1,10 +1,11 @@
 require('dotenv').config();
 
-const {Client, Collection, Intents, MessageEmbed} = require('discord.js');
+const {Client, Collection, Intents} = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
+const token = process.env.DISCORD_TOKEN;
 const {REST} = require('@discordjs/rest');
 const {Routes} = require('discord-api-types/v9');
-const token = process.env.DISCORD_TOKEN;
+const rest = new REST({version: '9'}).setToken(token);
 const cron = require('node-cron');
 const fs = require('fs');
 
@@ -22,14 +23,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 const clientId = '813454981906432021';
 const guildId = '755892311380066474';
 
-for (const file of commandFiles) {
+for (const file of commandFiles){
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 }
 
-const rest = new REST({version: '9'}).setToken(token);
-
+/* Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
@@ -42,6 +42,7 @@ const rest = new REST({version: '9'}).setToken(token);
 		console.error(error);
 	}
 })();
+*/
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -67,110 +68,43 @@ client.on('interactionCreate', async interaction => {
 	logInteraction();
 });
 
-/* Comment out all of these during vacation times.
-// Mondays (This also controls the lunch break and AT lock tasks for all days)
-cron.schedule('30 7 * * 1-5', () => {
-	client.channels.cache.get('804469098150232085').send('Your AT class may be starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
+cron.schedule('* 15 15 * *', () => {
+	client.channels.cache.get('804468992118095922').send('Daily reminder to do your homework!');
 });
-cron.schedule('0 8 * * 1-5', () => {
-	client.channels.cache.get('804469098150232085').send('Your AT class may be starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('30 8 * * 1-5', () => {
-	client.channels.cache.get('804469098150232085').send('Your AT class may be starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('0 9 * * 1', () => {
-	client.channels.cache.get('804469098150232085').send('Class is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('0 10 * * 1-5', () => {
-	client.channels.cache.get('804469098150232085').send('Lunch break is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('50 10 * * 1', () => {
-	client.channels.cache.get('804469098150232085').send('Class is starting.');}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('0 12 * * 1', () => {
-	client.channels.cache.get('804469098150232085').send('Class is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-// Tuesdays and Thursdays
-cron.schedule('0 9 * * 2,4', () => {
-	client.channels.cache.get('804469098150232085').send('Period 1 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('0 11 * * 2,4', () => {
-	client.channels.cache.get('804469098150232085').send('Period 3 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('20 12 * * 2,4', () => {
-	client.channels.cache.get('804469098150232085').send('Period 5 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-// Wednesdays and Fridays
-cron.schedule('0 9 * * 3,5', () => {
-	client.channels.cache.get('804469098150232085').send('Period 2 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('0 11 * * 3,5', () => {
-	client.channels.cache.get('804469098150232085').send('Period 4 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('20 12 * * 3,5', () => {
-	client.channels.cache.get('804469098150232085').send('Period 6 is starting.');
-}, {
-  scheduled: true,
-  timezone: 'America/Los_Angeles'
-});
-cron.schedule('30 13 * * 5', () => {
-	general.send('gaming time');
-});
-*/
 
 const blockedWords = fs.readFileSync('blockedWords.txt').toString().split('\n');
+
+client.on('threadCreate', async thread => {
+	if (blockedWords.some(word => thread.name.includes(word))){
+		await thread.delete();
+		console.log(`A thread by ${thread.ownerId} was deleted: ${thread.name}`);
+	}
+});
+
 client.on('messageCreate', message => {
-	if (message.channel.name === 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')){
+	if (message.channel.name == 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')){
 		message.reply(`Great art, ${message.author}!`);
 		message.pin();
 		return;
 	}
 	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
 		message.delete();
-		console.log(`A message by ${message.author.tag} was deleted: ` + '"' + message.content + '"');
+		console.log(`A message by ${message.author.tag} was deleted: ${message.content}`);
 		return;
 	}
-	if (message.content === 'ping'){
+	if (message.embeds[0] && message.embeds[0].title !== null){
+		if (blockedWords.some(word => message.embeds[0].title.toLowerCase().includes(word))){
+			message.delete();
+			console.log(`A message by ${message.author.tag} was deleted for embed: ${message.content}`);
+			return;
+		}
+	}
+	if (message.content == 'ping'){
 		message.reply({content: 'pong', allowedMentions: {repliedUser: false}});
 		console.log(`${message.author.tag} pinged`);
 		return;
 	}
-	if (message.content.toLowerCase() === 'egg' && message.author.id !== client.user.id){
+	if (message.content.toLowerCase() == 'egg' && message.author.id !== client.user.id){
 		if (Math.floor(Math.random() * 50) == 1){
 			message.reply({content: 'no', allowedMentions: {repliedUser: false}});
 			console.log(`${message.author.tag} got the lucky egg no!`);
@@ -234,6 +168,8 @@ client.on('messageCreate', message => {
 					break;
 			}
 			console.log(`${message.author.tag} ran the calculator with numbers ` + firstNumber + ' and ' + secondNumber + ' with operator ' + operator);
+			// What the heck was I doing with this log message
+			// Clearly I didn't know how template literals worked and just copy-pasted that
 			return;
 		};
 	}

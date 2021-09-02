@@ -13,7 +13,7 @@ const rHelp = new MessageEmbed()
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('r-help')
+		.setName('rhelp')
 		.setDescription('Displays a guide to the /role command.'),
 	async execute(interaction) {
 		await interaction.reply({embeds: [rHelp]});

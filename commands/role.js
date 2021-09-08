@@ -4,11 +4,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('role')
 		.setDescription('Gives you a role of your class type. Use `/r-help` for a guide to this command!')
-        .addStringOption(option =>
-            option.setName('input')
-                .setDescription('Enter the role of your class type.')
-                .setRequired(true)
-        ),
+        .addStringOption(option => option.setName('input').setDescription('Enter the role of your class type.').setRequired(true)),
 	async execute(interaction) {
         if (interaction.member.roles.cache.has('844002210471608340') || interaction.member.roles.cache.has('844002375501217842') || interaction.member.roles.cache.has('844002450976538624')){
             await interaction.reply('You already have a class role! Ask a staff member if you need to change it.');

@@ -1,6 +1,6 @@
 {
   "name": "emerson-discord-bot",
-  "version": "5.1.0",
+  "version": "5.2.0",
   "description": "Bot for Emerson School Stuff",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "author": "The J Hive",
   "license": "ISC",
   "dependencies": {
-    "@discordjs/builders": "^0.5.0",
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/opus": "^0.5.3",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.5.5",

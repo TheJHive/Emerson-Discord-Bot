@@ -4,8 +4,8 @@ const {Client, Collection, Intents} = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const token = process.env.DISCORD_TOKEN;
 const {REST} = require('@discordjs/rest');
-const {Routes} = require('discord-api-types/v9');
 const rest = new REST({version: '9'}).setToken(token);
+const {Routes} = require('discord-api-types/v9');
 const cron = require('node-cron');
 const fs = require('fs');
 
@@ -29,7 +29,7 @@ for (const file of commandFiles){
 	commands.push(command.data.toJSON());
 }
 
-/* Reminder: Every time you make a new command, run the code at least once with this uncommented.
+/* //Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
@@ -43,6 +43,10 @@ for (const file of commandFiles){
 	}
 })();
 */
+
+cron.schedule('* 15 15 * *', () => {
+	client.channels.cache.get('804468992118095922').send('Daily reminder to do your homework!');
+});
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -68,10 +72,6 @@ client.on('interactionCreate', async interaction => {
 	logInteraction();
 });
 
-cron.schedule('* 15 15 * *', () => {
-	client.channels.cache.get('804468992118095922').send('Daily reminder to do your homework!');
-});
-
 const blockedWords = fs.readFileSync('blockedWords.txt').toString().split('\n');
 
 client.on('threadCreate', async thread => {
@@ -81,42 +81,50 @@ client.on('threadCreate', async thread => {
 	}
 });
 
-client.on('messageCreate', message => {
+client.on('messageUpdate', async (oldMessage, newMessage) => { // oldMessage is never read but it needs to be there so don't remove it
+	if (blockedWords.some(word => newMessage.content.toLowerCase().includes(word))){
+		await newMessage.delete();
+		console.log(`A message by ${newMessage.author.tag} was deleted after being edited: ${newMessage.content}`);
+	}
+});
+
+client.on('messageCreate', async message => {
 	if (message.channel.name == 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')){
-		message.reply(`Great art, ${message.author}!`);
-		message.pin();
+		await message.reply(`Great art, ${message.author}!`);
+		await message.pin();
 		return;
 	}
 	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
-		message.delete();
+		await message.delete();
 		console.log(`A message by ${message.author.tag} was deleted: ${message.content}`);
 		return;
 	}
 	if (message.embeds[0] && message.embeds[0].title !== null){
 		if (blockedWords.some(word => message.embeds[0].title.toLowerCase().includes(word))){
-			message.delete();
+			await message.delete();
 			console.log(`A message by ${message.author.tag} was deleted for embed: ${message.content}`);
 			return;
 		}
 	}
 	if (message.content == 'ping'){
-		message.reply({content: 'pong', allowedMentions: {repliedUser: false}});
+		await message.reply({content: 'pong', allowedMentions: {repliedUser: false}});
 		console.log(`${message.author.tag} pinged`);
 		return;
 	}
 	if (message.content.toLowerCase() == 'egg' && message.author.id !== client.user.id){
 		if (Math.floor(Math.random() * 50) == 1){
-			message.reply({content: 'no', allowedMentions: {repliedUser: false}});
+			await message.reply({content: 'no', allowedMentions: {repliedUser: false}});
 			console.log(`${message.author.tag} got the lucky egg no!`);
 			return;
 		}else{
-			message.channel.send('egg');
+			await message.channel.send('egg');
 			console.log('egg');
 			return;
 		}
   	}
 	return; // I'm leaving this here as legacy code if anyone goes rooting through GitHub. It's unreachable unless this return statement is removed.
-			//Everything else has either been moved to Slash Commands and can be found in the commands folder or deprecated.
+           //  Everything else has either been moved to Slash Commands and can be found in the commands folder or deprecated.
+          //   I won't be updating any code here, even if some stuff from discord.js in here gets deprecated.
 	if (!message.content.startsWith('e!') || message.author.bot){
 		return;
 	}

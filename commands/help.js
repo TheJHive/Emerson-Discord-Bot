@@ -19,10 +19,11 @@ const help = new MessageEmbed()
 		{name: '`/parentportal`', value: 'Pulls up the link to the LAUSD Parent Portal Student Login, where you can get your SSID.', inline: true},
 		{name: '`/daysleft`', value: 'Tells you how many days of school are left.', inline: true},
 		{name: '`/role`', value: 'Gives you certain roles based off of what you use the command with. **Use `/r-help` for a guide to this command!**', inline: true},
-		{name: '`/campemerson`', value: 'This command is deprecated.', inline: true},
 		{name: '`/policies`', value: 'Pulls up a link to Emerson\'s Policies and Procedures.', inline: true},
+		{name: '`/calculator`', value: 'Put numbers and an operator with this command and the bot will act as a calculator.'},
 		{name: '`/buttons`', value: 'Makes buttons that do nothing.', inline: true},
 		{name: '`/github`', value: 'Pulls up a link to the public bot GitHub repo.', inline: true},
+		{name: '`/clearconsole`', value: 'Clears the node.js console of whomever is running the bot.\n(Can only be used by Bot Programmers)'},
 		{name: '`/invitebot`', value: 'Gives you a link to add this bot to your own server!', inline: true},
 		{name: '`/fart`', value: 'fart', inline: true}
 	);

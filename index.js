@@ -1,12 +1,11 @@
 require('dotenv').config();
 
-const {Client, Collection, Intents} = require('discord.js');
+const { Client, Collection, Intents } = require('discord.js');
 const client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
 const token = process.env.DISCORD_TOKEN;
-const {REST} = require('@discordjs/rest');
+const { REST } = require('@discordjs/rest');
 const rest = new REST({version: '9'}).setToken(token);
-const {Routes} = require('discord-api-types/v9');
-const cron = require('node-cron');
+const { Routes } = require('discord-api-types/v9');
 const fs = require('fs');
 
 client.once('ready', () => {
@@ -20,16 +19,16 @@ client.commands = new Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
-const clientId = '813454981906432021';
-const guildId = '755892311380066474';
-
-for (const file of commandFiles){
+for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
 	commands.push(command.data.toJSON());
 }
 
-/* //Reminder: Every time you make a new command, run the code at least once with this uncommented.
+const clientId = '813454981906432021';
+const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild (server) as a string
+
+//Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
@@ -42,21 +41,12 @@ for (const file of commandFiles){
 		console.error(error);
 	}
 })();
-*/
-
-cron.schedule('* 15 15 * *', () => {
-	client.channels.cache.get('804468992118095922').send('Daily reminder to do your homework!');
-});
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
 	const {commandName} = interaction;
 	if (!client.commands.has(commandName)) return;
-
-	function logInteraction(){
-		console.log(`${interaction.user.username} used /${commandName}`);
-	};
 
 	try {
 		await client.commands.get(commandName).execute(interaction);
@@ -69,8 +59,25 @@ client.on('interactionCreate', async interaction => {
 	collector.on('collect', async i => {
 		await i.update('I said, they do nothing.');
 	});
-	logInteraction();
+	console.log(`${interaction.user.username} used /${commandName}`);
 });
+
+//Uh this isn't important carry on
+client.on('messageDelete', async message => {
+	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
+		return;
+	} else {
+		await message.channel.send(`"${message.content}"\n-${message.author}`);
+	}
+});
+
+client.on('warn', console.log);
+
+client.on('rateLimit', (rateLimitData) => {
+	console.log(`I've been rate limited! Here's the Rate Limit Data:\nTimeout: ${rateLimitData.timeout}\nLimit: ${rateLimitData.limit}\nMethod: ${rateLimitData.method}\nPath: ${rateLimitData.path}\nRoute: ${rateLimitData.route}\nGlobal: ${rateLimitData.global}\nDo you even know what these things mean anyway?`);
+});
+
+const messageThatShouldNeverGetSent = 'This message should never get sent. If it does, how did it happen?';
 
 const blockedWords = fs.readFileSync('blockedWords.txt').toString().split('\n');
 
@@ -82,41 +89,49 @@ client.on('threadCreate', async thread => {
 });
 
 client.on('messageUpdate', async (oldMessage, newMessage) => { // oldMessage is never read but it needs to be there so don't remove it
-	if (blockedWords.some(word => newMessage.content.toLowerCase().includes(word))){
+	if (blockedWords.some(word => newMessage.content.toLowerCase().includes(word))) {
 		await newMessage.delete();
 		console.log(`A message by ${newMessage.author.tag} was deleted after being edited: ${newMessage.content}`);
 	}
 });
 
 client.on('messageCreate', async message => {
-	if (message.channel.name == 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')){
-		await message.reply(`Great art, ${message.author}!`);
-		await message.pin();
-		return;
+	if (message.channel.name == 'art' && message.attachments.size > 0 && message.member.roles.cache.has('833731538020597831') && !message.content.toLowerCase().includes('don\'t pin')) {
+		try {
+			await message.reply(`Great art, ${message.author}!`);
+			await message.pin();
+		} catch (error) {
+			console.error(error, '\nRemember: The bot hasn\'t crashed! It\'s still running, just with this big ol\' error message.');
+			await message.channel.send('Uh oh! Looks like we\'ve hit the pinned message limit for this channel. Jeremy will probably archive it soon.\nThe art isn\'t pinned here, so make sure to sent it again in the new channel after this is archived if you still want it pinned.');
+		}
 	}
-	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
+	if (blockedWords.some(word => message.content.toLowerCase().includes(word))) {
 		await message.delete();
 		console.log(`A message by ${message.author.tag} was deleted: ${message.content}`);
 		return;
 	}
-	if (message.embeds[0] && message.embeds[0].title !== null){
+	if (message.embeds[0] && message.embeds[0].title !== null) {
 		if (blockedWords.some(word => message.embeds[0].title.toLowerCase().includes(word))){
 			await message.delete();
 			console.log(`A message by ${message.author.tag} was deleted for embed: ${message.content}`);
 			return;
 		}
 	}
-	if (message.content == 'ping'){
+	if (message.content == 'ping') {
 		await message.reply({content: 'pong', allowedMentions: {repliedUser: false}});
 		console.log(`${message.author.tag} pinged`);
 		return;
 	}
-	if (message.content.toLowerCase() == 'egg' && message.author.id !== client.user.id){
-		if (Math.floor(Math.random() * 50) == 1){
+	if (message.content == 'SmVyZW15IGlzIGEgbmVyZC4gSWYgeW91J3JlIHJlYWRpbmcgdGhpcywgR0cgb24gZmluZGluZyBvdXQgd2hhdCBCYXNlNjQgZW5jcnlwdGlvbiBpcy4=') {
+		message.channel.send(messageThatShouldNeverGetSent);
+	}
+
+	if (message.content.toLowerCase() == 'egg' && message.author.id !== client.user.id) {
+		if (Math.floor(Math.random() * 50) == 1) {
 			await message.reply({content: 'no', allowedMentions: {repliedUser: false}});
 			console.log(`${message.author.tag} got the lucky egg no!`);
 			return;
-		}else{
+		} else {
 			await message.channel.send('egg');
 			console.log('egg');
 			return;

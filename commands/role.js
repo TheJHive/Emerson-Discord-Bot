@@ -11,7 +11,7 @@ module.exports = {
             return;
         }
 		const argument = interaction.options.getString('input').trim();
-        switch (argument){
+        switch (argument) {
             case 'highly accelerated':
                 await interaction.member.roles.add(interaction.guild.roles.cache.find(role => role.id == '844002210471608340'));
                 await interaction.reply('You have been given the Highly Accelerated role!');

@@ -11,7 +11,7 @@ module.exports = {
         const num1 = interaction.options.getNumber('num1');
 		const operator = interaction.options.getString('operator');
         const num2 = interaction.options.getNumber('num2');
-        switch (operator){
+        switch (operator) {
             case '+':
                 var result = num1 + num2; // So for some reason it won't let me use const or let but var works?
                 break;
@@ -30,7 +30,7 @@ module.exports = {
         }
         if (isNaN(result) || result == Infinity){
             await interaction.reply('Please don\'t divide by zero. It makes my code sad. \:(');
-        }else{
+        } else {
             await interaction.reply(`Your answer is ${result}`);
         }
 	},

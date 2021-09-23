@@ -17,8 +17,8 @@ module.exports = {
 	async execute(interaction) {
 		if (today.getTime() < lastDay.getTime()){
             await interaction.reply(`There are ${daysLeftRounded} days left of school.`);
-        }else
-        if (today.getTime() > lastDay.getTime() && today.getTime() < firstDay.getTime()){
+        }
+        else if (today.getTime() > lastDay.getTime() && today.getTime() < firstDay.getTime()){
             await interaction.reply(`It\'s currently summer break, and there are ${daysUntilRounded} days left until school starts.`);
         }
 	},

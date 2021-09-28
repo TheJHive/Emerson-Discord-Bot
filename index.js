@@ -28,6 +28,7 @@ for (const file of commandFiles) {
 const clientId = '813454981906432021';
 const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild (server) as a string
 
+/*
 //Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
@@ -41,6 +42,7 @@ const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild 
 		console.error(error);
 	}
 })();
+*/
 
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
@@ -62,6 +64,7 @@ client.on('interactionCreate', async interaction => {
 	console.log(`${interaction.user.username} used /${commandName}`);
 });
 
+/*
 //Uh this isn't important carry on
 client.on('messageDelete', async message => {
 	if (blockedWords.some(word => message.content.toLowerCase().includes(word))){
@@ -70,6 +73,7 @@ client.on('messageDelete', async message => {
 		await message.channel.send(`"${message.content}"\n-${message.author}`);
 	}
 });
+*/
 
 client.on('warn', console.log);
 
@@ -102,7 +106,7 @@ client.on('messageCreate', async message => {
 			await message.pin();
 		} catch (error) {
 			console.error(error, '\nRemember: The bot hasn\'t crashed! It\'s still running, just with this big ol\' error message.');
-			await message.channel.send('Uh oh! Looks like we\'ve hit the pinned message limit for this channel. Jeremy will probably archive it soon.\nThe art isn\'t pinned here, so make sure to sent it again in the new channel after this is archived if you still want it pinned.');
+			await message.channel.send('Uh oh! Looks like we\'ve hit the pinned message limit for this channel. Jeremy will probably archive it soon.\nThe art isn\'t pinned here, so make sure to send it again in the new channel after this is archived if you still want it pinned.');
 		}
 	}
 	if (blockedWords.some(word => message.content.toLowerCase().includes(word))) {

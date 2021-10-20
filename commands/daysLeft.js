@@ -1,4 +1,4 @@
-const {SlashCommandBuilder} = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('@discordjs/builders');
 
 let today = new Date(); // There's probably a better way to do this, but I don't have time to do a cleaner implementation
 const firstDay = new Date(today.getFullYear(), 7, 16);
@@ -19,7 +19,7 @@ module.exports = {
             await interaction.reply(`There are ${daysLeftRounded} days left of school.`);
         }
         else if (today.getTime() > lastDay.getTime() && today.getTime() < firstDay.getTime()){
-            await interaction.reply(`It\'s currently summer break, and there are ${daysUntilRounded} days left until school starts.`);
+            await interaction.reply(`It's currently summer break, and there are ${daysUntilRounded} days left until school starts.`);
         }
 	},
 };

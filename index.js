@@ -22,13 +22,13 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.data.name, command);
-	commands.push(command.data.toJSON());
+	commands.push(command.data.toJSON()); // TODO: learn what the heck this thing does
 }
 
 const clientId = '813454981906432021';
 const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild (server) as a string
 
-/*
+
 //Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
@@ -42,8 +42,9 @@ const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild 
 		console.error(error);
 	}
 })();
-*/
 
+const crash = require('./commands/crash.js');
+const up = crash.error // This is a terrible way of doing this
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
@@ -53,13 +54,17 @@ client.on('interactionCreate', async interaction => {
 	try {
 		await client.commands.get(commandName).execute(interaction);
 	} catch (error) {
-		console.error(error);
-		await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
+		if (error.message == 'Bot crashed by command') {
+			throw up; // ;)
+		} else {
+			console.error(error);
+			await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
+		}
 	}
 	const collector = interaction.channel.createMessageComponentCollector({time: 15000});
 
-	collector.on('collect', async i => {
-		await i.update('I said, they do nothing.');
+	collector.on('collect', async i => {            // Something feels wrong with this being here, but I don't know what.
+		await i.update('I said, they do nothing.'); // Probably caused by my lack of knowing what I'm doing.
 	});
 	console.log(`${interaction.user.username} used /${commandName}`);
 });
@@ -109,7 +114,7 @@ client.on('messageCreate', async message => {
 			await message.channel.send('Uh oh! Looks like we\'ve hit the pinned message limit for this channel. Jeremy will probably archive it soon.\nThe art isn\'t pinned here, so make sure to send it again in the new channel after this is archived if you still want it pinned.');
 		}
 	}
-	if (blockedWords.some(word => message.content.toLowerCase().includes(word))) {
+	if (blockedWords.some(word => message.content.toLowerCase().replace(/\s+/g, '').includes(word))) { // I have no idea how regex works; I copied and pasted this. ¯\_(ツ)_/¯
 		await message.delete();
 		console.log(`A message by ${message.author.tag} was deleted: ${message.content}`);
 		return;

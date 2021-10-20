@@ -1,2 +1,2 @@
 @ECHO OFF
-npm run start
+npm start

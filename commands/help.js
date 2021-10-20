@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require('@discordjs/builders');
-const {MessageEmbed} = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 const help = new MessageEmbed()
 	.setColor('#143F69')
@@ -23,9 +23,11 @@ const help = new MessageEmbed()
 		{name: '`/calculator`', value: 'Put numbers and an operator with this command and the bot will act as a calculator.'},
 		{name: '`/buttons`', value: 'Makes buttons that do nothing.', inline: true},
 		{name: '`/cat`', value: 'Sends a random cat from https://aws.random.cat/meow (This is mostly an experiment with REST APIs.)'},
+		{name: '`/dog`', value: 'Sends a random dog from https://dog.ceo/api/breeds/image/random (Now /cat has a friend.)'},
 		{name: '`/github`', value: 'Pulls up a link to the public bot GitHub repo.', inline: true},
 		{name: '`/clearconsole`', value: 'Clears the node.js console of whomever is running the bot.\n(Can only be used by Bot Programmers)'},
 		{name: '`/stop`', value: 'Completely stops the bot and takes it offline. (This requires both a special role and a password!)'},
+		{name: '`/crash`', value: 'Throws an error and stops the bot. (Only the great lord of the bot can use this!)'},
 		{name: '`/invitebot`', value: 'Gives you a link to add this bot to your own server!', inline: true},
 		{name: '`/fart`', value: 'fart', inline: true}
 	);

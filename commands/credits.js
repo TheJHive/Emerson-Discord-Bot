@@ -1,5 +1,5 @@
-const {SlashCommandBuilder} = require('@discordjs/builders');
-const {MessageEmbed} = require('discord.js');
+const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 
 const credits = new MessageEmbed()
 	.setColor('#143F69')
@@ -7,7 +7,7 @@ const credits = new MessageEmbed()
 	.setURL('https://www.youtube.com/watch?v=dQw4w9WgXcQ')
 	.setDescription('Bot made by <@702952339547357255>')
 	.addFields(
-		{name: '(He really didn\'t make the bot)', value: '(He just threw together stuff from StackOverflow, tutorials and the Discord.js Guide)'},
+		{name: '(He really didn\'t make the bot)', value: '~~(He just threw together stuff from StackOverflow, tutorials and the Discord.js Guide)~~\nIt\'s much more sophisticated now, please can we say I made it?'},
 		{name: 'Dependencies:', value: 'The node packages the bot uses'},
 		{name: 'Discord.js', value: 'For obvious reasons\n[Website](https://discord.js.org/#/)'},
 		{name: 'dotenv', value: 'For storage of bot token and authorization\n[npm page](https://www.npmjs.com/package/dotenv)'},

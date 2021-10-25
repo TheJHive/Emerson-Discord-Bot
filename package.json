@@ -1,6 +1,6 @@
 {
   "name": "emerson-discord-bot",
-  "version": "5.5.0",
+  "version": "5.5.1",
   "description": "Bot for Emerson School Stuff",
   "main": "index.js",
   "scripts": {

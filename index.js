@@ -28,7 +28,7 @@ for (const file of commandFiles) {
 const clientId = '813454981906432021';
 const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild (server) as a string
 
-
+/*
 //Reminder: Every time you make a new command, run the code at least once with this uncommented.
 (async () => {
 	try {
@@ -42,6 +42,7 @@ const guildId = process.env.GUILD_ID; // Replace this with the ID of your guild 
 		console.error(error);
 	}
 })();
+*/
 
 const crash = require('./commands/crash.js');
 const up = crash.error // This is a terrible way of doing this
@@ -134,7 +135,6 @@ client.on('messageCreate', async message => {
 	if (message.content == 'SmVyZW15IGlzIGEgbmVyZC4gSWYgeW91J3JlIHJlYWRpbmcgdGhpcywgR0cgb24gZmluZGluZyBvdXQgd2hhdCBCYXNlNjQgZW5jcnlwdGlvbiBpcy4=') {
 		message.channel.send(messageThatShouldNeverGetSent);
 	}
-
 	if (message.content.toLowerCase() == 'egg' && message.author.id !== client.user.id) {
 		if (Math.floor(Math.random() * 50) == 1) {
 			await message.reply({content: 'no', allowedMentions: {repliedUser: false}});

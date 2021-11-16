@@ -20,6 +20,7 @@ const help = new MessageEmbed()
 		{name: '`/daysleft`', value: 'Tells you how many days of school are left.', inline: true},
 		{name: '`/role`', value: 'Gives you certain roles based off of what you use the command with. **Use `/rhelp` for a guide to this command!**', inline: true},
 		{name: '`/policies`', value: 'Pulls up a link to Emerson\'s Policies and Procedures.', inline: true},
+		{name: '`/artpincount`', value: 'Gets the amount of messages pinned in #art'},
 		{name: '`/calculator`', value: 'Put numbers and an operator with this command and the bot will act as a calculator.'},
 		{name: '`/buttons`', value: 'Makes buttons that do nothing.', inline: true},
 		{name: '`/cat`', value: 'Sends a random cat from https://aws.random.cat/meow (This is mostly an experiment with REST APIs.)'},
